@@ -12,9 +12,8 @@ import java.util.Map;
 
 /*
    Used to filter incoming parameter requests, request parameters are filtered against applicable tag enums and only
-   those that are found are searched for in each article, if they are found, articles gets put in separate Map that 
+   those tags that are valid are searched for in each article, if they are found, articles get put in separate Map that 
    is returned.
-   
  */
 public class ArticleFilter {
     private Map<Integer, Document> articleMap;

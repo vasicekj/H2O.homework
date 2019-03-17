@@ -17,7 +17,10 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-
+/*  
+    Loads file and splits it into articles that are fed as JSON and "formated as XML" to map. XML architecture is easier
+    to search in and JSONs are ready for reponses in separate map.
+*/
 public class ArticleRepository {
     private String path;
     private Map<Integer, Document> articleMapInDoc = new HashMap<Integer, Document>();
