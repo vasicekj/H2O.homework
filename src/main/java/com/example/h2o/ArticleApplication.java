@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.h2o;
 
 
 import org.springframework.boot.SpringApplication;

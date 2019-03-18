@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.h2o;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,10 +14,11 @@ import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-
-
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+/*
+Some basic tests to verify functionality.
+ */
 public class RequestTest {
 
     @LocalServerPort
@@ -31,18 +32,18 @@ public class RequestTest {
     Only articles that contain all parameter values match.
      */
     public void onlyArticlesMatchingValidTags() throws Exception {
-        
+
         Map<String, String> params = new HashMap<>();
-        params.put("TOPICS","grain,wheat");
-        params.put("DATE","APR");
-        String request= "";
-        for (String key : params.keySet()){
-            request += key + "="+params.get(key) + "&";
+        params.put("TOPICS", "grain,wheat");
+        params.put("DATE", "APR");
+        String request = "";
+        for (String key : params.keySet()) {
+            request += key + "=" + params.get(key) + "&";
         }
-        
-        ArticleParser articleParser = new ArticleParser(this.restTemplate.getForObject("http://localhost:" + 
-                        port + "/article?"+ request, String.class));
-        assertThat (articleParser.allFilters(params)).isTrue();
+
+        ArticleParser articleParser = new ArticleParser(this.restTemplate.getForObject("http://localhost:" +
+                port + "/article?" + request, String.class));
+        assertThat(articleParser.allFilters(params)).isTrue();
 
     }
 
@@ -53,16 +54,16 @@ public class RequestTest {
     public void invalidTagsReturnError() throws Exception {
 
         Map<String, String> params = new HashMap<>();
-        params.put("TOLPICS","grain,wheat");
-        params.put("DAATE","APR");
-        String request= "";
-        for (String key : params.keySet()){
-            request += key + "="+params.get(key) + "&";
+        params.put("TOLPICS", "grain,wheat");
+        params.put("DAATE", "APR");
+        String request = "";
+        for (String key : params.keySet()) {
+            request += key + "=" + params.get(key) + "&";
         }
 
         ArticleParser articleParser = new ArticleParser(this.restTemplate.getForObject("http://localhost:" +
-                port + "/article?"+ request, String.class));
-        assertThat (articleParser.allFilters(params)).isFalse();
+                port + "/article?" + request, String.class));
+        assertThat(articleParser.allFilters(params)).isFalse();
 
     }
 
@@ -73,19 +74,18 @@ public class RequestTest {
     public void mixedValidAndInvalidTags() throws Exception {
 
         Map<String, String> params = new HashMap<>();
-        params.put("TOPICS","grain,wheat");
-        params.put("DAATE","APR");
-        String request= "";
-        for (String key : params.keySet()){
-            request += key + "="+params.get(key) + "&";
+        params.put("TOPICS", "grain,wheat");
+        params.put("DAATE", "APR");
+        String request = "";
+        for (String key : params.keySet()) {
+            request += key + "=" + params.get(key) + "&";
         }
 
         ArticleParser articleParser = new ArticleParser(this.restTemplate.getForObject("http://localhost:" +
-                port + "/article?"+ request, String.class));
-        assertThat (articleParser.onlyValidFilter(params)).isTrue();
+                port + "/article?" + request, String.class));
+        assertThat(articleParser.onlyValidFilter(params)).isTrue();
 
     }
-    
 
     @Test
     /*
@@ -94,9 +94,10 @@ public class RequestTest {
     public void shouldReturnArticleWithSpecifiedId() throws Exception {
         String articleId = "17010";
 
-        ArticleParser articleParser = new ArticleParser(this.restTemplate.getForObject("http://localhost:" + 
-                        port + "/id?id="+ articleId, String.class));
+        ArticleParser articleParser = new ArticleParser(this.restTemplate.getForObject("http://localhost:" +
+                port + "/id?id=" + articleId, String.class));
         assertThat(articleParser.getResponseArticleId()).isEqualTo(articleId);
 
     }
+
 }

@@ -1,7 +1,7 @@
-package com.example.demo;
+package com.example.h2o;
 
-import com.example.demo.Enums.SgmlTags;
-import com.example.demo.Enums.TextTags;
+import com.example.h2o.Enums.SgmlTags;
+import com.example.h2o.Enums.TextTags;
 import org.json.JSONArray;
 import org.jsoup.nodes.Document;
 
