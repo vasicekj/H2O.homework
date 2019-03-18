@@ -1,10 +1,11 @@
 <h2> APIs </h2>
-  <h3>/list</h3>
-  returns all articles
+
   <h3>/filter</h3>
-  returns all articles matching the filter<br>
+  returns all articles or all articles matching the filter<br>
   <h5>example:</h5>
   <code>filter?TOPICS=grain,wheat,barley&DATE=APR</code><br>
+  For all articles:
+  <code>filter?TOPICS=grain,wheat,barley&DATE=APR</code>
   <h5>Applicable filtering tags:</h5>
     DATE,<br>
     UNKNOWN,<br>
