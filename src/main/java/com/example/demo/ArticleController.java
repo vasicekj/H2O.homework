@@ -13,13 +13,13 @@ public class ArticleController {
     ArticleRepository articleRepository = new ArticleRepository("src/main/resources/Reuters/reut2-017.sgm");
     ArticleFilter articleFilter = new ArticleFilter(articleRepository);
 
-    @GetMapping(value ="/article", produces= MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value ="/articleById", produces= MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public String articleId(@RequestParam(value="id", defaultValue="") int id) {
         return articleRepository.getArticleAsString(id);
     }
 
-    @GetMapping(value ="/filter", produces= MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value ="/article", produces= MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public String filteredArticles(@RequestParam Map<String, String> params) {
         return articleFilter.filterArticles(params);
