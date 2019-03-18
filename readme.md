@@ -24,5 +24,5 @@
   <h3>/id</h3>
   returns an article with matching newReuters id
   <h5>example:</h5>
-  <code>articleById/17022</code>
+  <code>/articleById?id=17022</code>
   
