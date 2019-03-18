@@ -1,7 +1,7 @@
 <h2> APIs </h2>
 
   <h3>/article</h3>
-  returns all articles or all articles matching the filter<br>
+  Returns all articles or all articles matching the filter, if invalid filtering tag is used, the tag is ignored<br>
   <h5>example:</h5>
   <code>/article?TOPICS=grain,wheat,barley&DATE=APR</code><br>
   For all articles:<br>
@@ -24,5 +24,5 @@
   <h3>/id</h3>
   returns an article with matching newReuters id
   <h5>example:</h5>
-  <code>/articleById?id=17022</code>
+  <code>/id?id=17022</code>
   
