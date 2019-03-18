@@ -1,7 +1,7 @@
 <h2> APIs </h2>
 
   <h3>/article</h3>
-  Returns all articles or all articles matching the filter, if invalid filtering tag is used, the tag is ignored, multiple tags can be used, as long as at least one tag is valid and it's value has been found in some article, the article is returned. If all tags are invalid or nothing was found, response is empty.<br>
+  Returns all articles or all articles matching the filter, if invalid filtering tag is used, the tag is ignored, multiple tags can be used, as long as at least one tag is valid and its value has been found in some article, the article is returned. If all tags are invalid or nothing was found, response is empty.<br>
     <h5>example:</h5>
   <code>/article</code><br>
   Returns all articles.
