@@ -17,29 +17,23 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-/*  
-    Loads file and splits it into articles that are fed as JSON and "formated as XML" to map. XML architecture is easier
-    to search in and JSONs are ready for reponses in separate map.
-*/
+/**
+ * Loads file and splits it into articles that are fed as JSON and "formated as XML" to map with reuters newId as key.
+ * XML architecture is easier to search in and JSONs are ready for reponses in separate map.
+ */
 public class ArticleRepository {
     private String path;
-    private String allArticles;
     private Map<Integer, Document> articleMapInDoc = new HashMap<>();
     private Map<Integer, JSONObject> articleMapInString = new HashMap<Integer, JSONObject>();
-    
-
 
     public ArticleRepository(String path) {
         this.path = path;
-        articleGenerator();
-        this.allArticles = generateAllArticleMapAsString();
-
+        articleGenerator(); 
     }
 
     public Map<Integer, Document> getArticleMapInDoc() {
         return articleMapInDoc;
     }
-    
 
     public JSONObject getArticleAsJSON(int id){
         return articleMapInString.get(id);
@@ -57,11 +51,10 @@ public class ArticleRepository {
         return article;
     }
 
-    public static int getArticleId(String article) {
+    private static int getArticleId(String article) {
         return Integer.parseInt(article.substring(article.indexOf("NEWID=\"") + (7), article.indexOf("\">")));
     }
-
-    //Create 2 maps, one with "XMLs" for easier filtering and one ready with JSONs
+    
     private void articleGenerator() {
         try {
             FileReader fileReader = new FileReader(path);
@@ -77,7 +70,6 @@ public class ArticleRepository {
                     articleMapInString.put(getArticleId(article), convertDocToJson(doc));
                     article = "";
                 }
-
             }
             fileReader.close();
         } catch (FileNotFoundException exc) {
@@ -85,14 +77,6 @@ public class ArticleRepository {
         } catch (IOException iox) {
             System.out.println("Cannot read file");
         }
-    }
-
-    private String generateAllArticleMapAsString() {
-        JSONArray tempArticle = new JSONArray();
-        for (JSONObject value : articleMapInString.values()) {
-            tempArticle.put(value);
-        }
-        return tempArticle.toString();
     }
 
     private JSONObject getReutersHeader(Document doc) {

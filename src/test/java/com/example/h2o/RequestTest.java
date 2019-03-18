@@ -13,12 +13,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
+/**
+ * Testing functionality class, some basic tests to verify functionality are here.
+ */
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-/*
-Some basic tests to verify functionality.
- */
 public class RequestTest {
 
     @LocalServerPort
@@ -28,8 +27,8 @@ public class RequestTest {
     private TestRestTemplate restTemplate;
 
     @Test
-    /*
-    Only articles that contain all parameter values match.
+    /**
+     * Only articles that contain all parameter values match.
      */
     public void onlyArticlesMatchingValidTags() throws Exception {
 
@@ -48,8 +47,8 @@ public class RequestTest {
     }
 
     @Test
-    /*
-    invalid Tags are not used for filtering
+    /**
+     * invalid Tags are not used for filtering
      */
     public void invalidTagsReturnError() throws Exception {
 
@@ -68,8 +67,8 @@ public class RequestTest {
     }
 
     @Test
-    /*
-    Mixed valid and invalid tags cause only the valid ones to be used for filtering
+    /**
+     * Mixed valid and invalid tags cause only the valid ones to be used for filtering
      */
     public void mixedValidAndInvalidTags() throws Exception {
 
@@ -88,8 +87,8 @@ public class RequestTest {
     }
 
     @Test
-    /*
-    Only article with specified id will be returned
+    /**
+     * Only article with specified id will be returned
      */
     public void shouldReturnArticleWithSpecifiedId() throws Exception {
         String articleId = "17010";

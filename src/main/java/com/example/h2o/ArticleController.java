@@ -7,7 +7,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
-
+/**
+* Endpoints are defined here, repository and filter object is also initialized.
+*/
 @RestController
 public class ArticleController {
     ArticleRepository articleRepository = new ArticleRepository("src/main/resources/Reuters/reut2-017.sgm");

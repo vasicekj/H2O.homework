@@ -9,26 +9,21 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-/*
-   Used to filter incoming parameter requests, request parameters are filtered against applicable tag enums and only
-   those tags that are valid are searched for in each article, if they are found, articles get put in separate Map that 
-   is returned.
+/**
+ * Used to filter incoming parameter requests, request parameters are filtered against applicable tag enums and only
+ * those tags that are valid are searched for in each article, if they are found, articles get put in separate Map that
+ * is returned.
  */
 public class ArticleFilter {
     private Map<Integer, Document> articleMap;
     private Map<String, String> validTags;
     private ArticleRepository articleRepository;
-    
-    
-    
-
 
     public ArticleFilter(ArticleRepository articleRepository) {
         this.articleMap = articleRepository.getArticleMapInDoc();
         this.articleRepository = articleRepository;
     }
-
-
+    
     public String filterArticles(Map<String, String> parameters) {
         applicableTags(parameters);
         return getFilteredResult().toString();
@@ -81,9 +76,7 @@ public class ArticleFilter {
         results.forEach((articleNo) -> {
             payload.put(articleRepository.getArticleAsJSON(articleNo));
         });
-        
         return payload;
-
     }
 }
 
