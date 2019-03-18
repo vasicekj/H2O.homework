@@ -4,8 +4,11 @@
   Returns all articles or all articles matching the filter, if invalid filtering tag is used, the tag is ignored<br>
   <h5>example:</h5>
   <code>/article?TOPICS=grain,wheat,barley&DATE=APR</code><br>
-  For all articles:<br>
+  Returns all articles that have topics grain, wheat and barley and were published in April.
   <code>/article</code>
+  Returns all articles.
+  <code>/article?TOOPICS=grain,wheat,barley&DATE=APR</code><br>
+  Returns all articles that have Apr in date as TOOPICS is a not a valid tag.
   <h5>Applicable filtering tags:</h5>
     DATE,<br>
     UNKNOWN,<br>
