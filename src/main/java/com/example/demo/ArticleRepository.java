@@ -61,7 +61,7 @@ public class ArticleRepository {
         return allArticles;
     }
 
-    private static int getArticleId(String article) {
+    public static int getArticleId(String article) {
         return Integer.parseInt(article.substring(article.indexOf("NEWID=\"") + (7), article.indexOf("\">")));
     }
 
@@ -114,7 +114,6 @@ public class ArticleRepository {
 
         for (SgmlTags tag : SgmlTags.values()) {
             JSONObject tagJSON = convertTagValueToJson(doc, tag.toString());
-            ;
             articleAsJson.put(tag.toString(), tagJSON.get(tag.toString()));
         }
         for (TextTags tag : TextTags.values()) {

@@ -13,7 +13,7 @@ public class ArticleController {
     ArticleRepository articleRepository = new ArticleRepository("src/main/resources/Reuters/reut2-017.sgm");
     ArticleFilter articleFilter = new ArticleFilter(articleRepository);
 
-    @GetMapping(value ="/articleById", produces= MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value ="/id", produces= MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public String articleId(@RequestParam(value="id", defaultValue="") int id) {
         return articleRepository.getArticleAsString(id);

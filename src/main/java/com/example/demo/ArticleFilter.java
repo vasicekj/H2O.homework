@@ -8,7 +8,6 @@ import org.jsoup.nodes.Document;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 /*
@@ -38,6 +37,18 @@ public class ArticleFilter {
 
     }
 
+    public static boolean containsParameters(Document doc, Map<String, String> validTags) {
+        for (String key : validTags.keySet()) {
+            String[] values = validTags.get(key).split(",");
+            for (String s : values) {
+                if (!doc.select(key).text().toLowerCase().contains(s.toLowerCase())) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
     private JSONArray getFilteredResult() {
         JSONArray payload = new JSONArray();
         ArrayList<Integer> results = new ArrayList<>();
@@ -48,33 +59,17 @@ public class ArticleFilter {
         else if (validTags.size() == 0  && invalidTags.keys().hasNext()){
             return payload.put(invalidTags);
         }
-        Iterator<Map.Entry<Integer, Document>> articleEntry = articleMap.entrySet().iterator();
-        while (articleEntry.hasNext()) {
-            Map.Entry<Integer, Document> article = articleEntry.next();
-            if (containsParameters(article.getValue())) {
-                results.add(article.getKey());
-            }
-
+        for (Integer key: articleMap.keySet()){
+            if (containsParameters(articleMap.get(key), validTags)) {
+                results.add(key);
+            } 
         }
-        payload.put(invalidTags);
         results.forEach((articleNo) -> {
             payload.put(articleRepository.getArticleAsJSON(articleNo));
         });
         
         return payload;
 
-    }
-
-    private boolean containsParameters(Document doc) {
-        for (String key : validTags.keySet()) {
-            String[] values = validTags.get(key).split(",");
-            for (String s : values) {
-                if (!doc.select(key).text().toLowerCase().contains(s.toLowerCase())) {
-                    return false;
-                }
-            }
-        }
-        return true;
     }
 
     private void applicableTags(Map<String, String> params) {
