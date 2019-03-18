@@ -7,9 +7,11 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.parser.Parser;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import static com.example.demo.ArticleFilter.containsParameters;
+import static com.example.demo.ArticleFilter.getAllEnums;
 
 public class ArticleParser {
     private String response;
@@ -27,7 +29,15 @@ public class ArticleParser {
         }
         return true;
     }
-
+    public boolean onlyValidFilter(Map<String, String> params){
+        Map<String,String> tagsToBeEvaluated = new HashMap<>();
+        for (String key : params.keySet()) {
+            if (getAllEnums().contains(key.toLowerCase())){
+                tagsToBeEvaluated.put(key,params.get(key));
+            }
+        }
+        return allFilters(tagsToBeEvaluated);
+    }
     private boolean containsValue(Map<String, String> params, Document doc) {
         return containsParameters(doc,params);
     }

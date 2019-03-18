@@ -3,7 +3,6 @@ package com.example.demo;
 import com.example.demo.Enums.SgmlTags;
 import com.example.demo.Enums.TextTags;
 import org.json.JSONArray;
-import org.json.JSONObject;
 import org.jsoup.nodes.Document;
 
 import java.util.ArrayList;
@@ -18,7 +17,6 @@ import java.util.Map;
 public class ArticleFilter {
     private Map<Integer, Document> articleMap;
     private Map<String, String> validTags;
-    private JSONObject invalidTags;
     private ArticleRepository articleRepository;
     
     
@@ -49,16 +47,32 @@ public class ArticleFilter {
         return true;
     }
 
+    public static ArrayList<String> getAllEnums() {
+        ArrayList<String> allEnumsList = new ArrayList<>();
+
+        for (SgmlTags tag : SgmlTags.values()) {
+            allEnumsList.add(tag.toString().toLowerCase());
+        }
+
+        for (TextTags tag : TextTags.values()) {
+            allEnumsList.add(tag.toString().toLowerCase());
+        }
+        return allEnumsList;
+    }
+
+    private void applicableTags(Map<String, String> params) {
+        validTags = new HashMap<>();
+        for (String key : params.keySet()) {
+            if (getAllEnums().contains(key.toLowerCase())){
+                validTags.put(key, params.get(key));
+            }
+        }
+    }
+
     private JSONArray getFilteredResult() {
         JSONArray payload = new JSONArray();
         ArrayList<Integer> results = new ArrayList<>();
-        if (validTags.size() == 0  && !invalidTags.keys().hasNext()) {
-            articleRepository.getAllArticles();
-        }
-        
-        else if (validTags.size() == 0  && invalidTags.keys().hasNext()){
-            return payload.put(invalidTags);
-        }
+
         for (Integer key: articleMap.keySet()){
             if (containsParameters(articleMap.get(key), validTags)) {
                 results.add(key);
@@ -70,33 +84,6 @@ public class ArticleFilter {
         
         return payload;
 
-    }
-
-    private void applicableTags(Map<String, String> params) {
-        invalidTags = new JSONObject();
-        validTags = new HashMap<>();
-        for (String key : params.keySet()) {
-            if (getAllEnums().contains(key.toLowerCase())){
-                validTags.put(key, params.get(key));
-            }
-            else {
-              invalidTags.put(key,"ERROR, filter tag is invalid");  
-            }
-        }
-    }
-
-
-    private ArrayList<String> getAllEnums() {
-        ArrayList<String> allEnumsList = new ArrayList<>();
-
-        for (SgmlTags tag : SgmlTags.values()) {
-            allEnumsList.add(tag.toString().toLowerCase());
-        }
-
-        for (TextTags tag : TextTags.values()) {
-            allEnumsList.add(tag.toString().toLowerCase());
-        }
-        return allEnumsList;
     }
 }
 

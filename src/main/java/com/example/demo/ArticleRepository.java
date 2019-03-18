@@ -57,10 +57,6 @@ public class ArticleRepository {
         return article;
     }
 
-    public String getAllArticles() {
-        return allArticles;
-    }
-
     public static int getArticleId(String article) {
         return Integer.parseInt(article.substring(article.indexOf("NEWID=\"") + (7), article.indexOf("\">")));
     }
