@@ -1,10 +1,11 @@
 <h2> APIs </h2>
-  <h3>/list</h3>
-  returns all articles
-  <h3>/filter</h3>
-  returns all articles matching the filter<br>
+
+  <h3>/article</h3>
+  returns all articles or all articles matching the filter<br>
   <h5>example:</h5>
-  <code>filter?TOPICS=grain,wheat,barley&DATE=APR</code><br>
+  <code>/article?TOPICS=grain,wheat,barley&DATE=APR</code><br>
+  For all articles:<br>
+  <code>/article</code>
   <h5>Applicable filtering tags:</h5>
     DATE,<br>
     UNKNOWN,<br>
@@ -23,5 +24,5 @@
   <h3>/id</h3>
   returns an article with matching newReuters id
   <h5>example:</h5>
-  <code>id/17022</code>
+  <code>/articleById?id=17022</code>
   
