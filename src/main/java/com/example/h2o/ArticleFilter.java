@@ -67,7 +67,9 @@ public class ArticleFilter {
     private JSONArray getFilteredResult() {
         JSONArray payload = new JSONArray();
         ArrayList<Integer> results = new ArrayList<>();
-
+        if (validTags.isEmpty()){
+            return payload;
+        }
         for (Integer key: articleMap.keySet()){
             if (containsParameters(articleMap.get(key), validTags)) {
                 results.add(key);

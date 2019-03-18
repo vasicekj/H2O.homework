@@ -20,7 +20,7 @@ public class ArticleParser {
         this.response = response;
     }
 
-    public boolean allFilters(Map<String, String> params) {
+    public boolean containsAllFilterTags(Map<String, String> params) {
         JSONArray responseJsonArray = new JSONArray(response);
         for (int i = 0; i < responseJsonArray.length(); i++) {
             if (!containsValue(params, convertToDoc(responseJsonArray.get(i).toString()))) {
@@ -29,17 +29,25 @@ public class ArticleParser {
         }
         return true;
     }
-
-    public boolean onlyValidFilter(Map<String, String> params) {
+    
+    public boolean isResponseEmpty(){
+        JSONArray responseJsonArray = new JSONArray(response);
+        return responseJsonArray.isEmpty();
+    }
+    
+    public boolean verifyOnlyApplicableFilterTags(Map<String, String> params) {
         Map<String, String> tagsToBeEvaluated = new HashMap<>();
         for (String key : params.keySet()) {
             if (getAllEnums().contains(key.toLowerCase())) {
                 tagsToBeEvaluated.put(key, params.get(key));
             }
         }
-        return allFilters(tagsToBeEvaluated);
+        return containsAllFilterTags(tagsToBeEvaluated);
     }
-
+    public int numberOfArticles(){
+        JSONArray responseJsonArray = new JSONArray(response);
+        return responseJsonArray.length();
+    }
     private boolean containsValue(Map<String, String> params, Document doc) {
         return containsParameters(doc, params);
     }

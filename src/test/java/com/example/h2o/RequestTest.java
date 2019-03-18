@@ -28,7 +28,7 @@ public class RequestTest {
 
     @Test
     /**
-     * Only articles that contain all parameter values match.
+     * Only articles that contain all parameter values are returned.
      */
     public void onlyArticlesMatchingValidTags() throws Exception {
 
@@ -42,13 +42,13 @@ public class RequestTest {
 
         ArticleParser articleParser = new ArticleParser(this.restTemplate.getForObject("http://localhost:" +
                 port + "/article?" + request, String.class));
-        assertThat(articleParser.allFilters(params)).isTrue();
+        assertThat(articleParser.verifyOnlyApplicableFilterTags(params)).isTrue();
 
     }
 
     @Test
     /**
-     * invalid Tags are not used for filtering
+     * Nothing is returned if all tags are invalid.
      */
     public void invalidTagsReturnError() throws Exception {
 
@@ -62,19 +62,21 @@ public class RequestTest {
 
         ArticleParser articleParser = new ArticleParser(this.restTemplate.getForObject("http://localhost:" +
                 port + "/article?" + request, String.class));
-        assertThat(articleParser.allFilters(params)).isFalse();
+        assertThat(articleParser.isResponseEmpty()).isTrue();
 
     }
 
     @Test
     /**
-     * Mixed valid and invalid tags cause only the valid ones to be used for filtering
+     * Articles matching valid tags are returned, invalid are ignored.
      */
     public void mixedValidAndInvalidTags() throws Exception {
 
         Map<String, String> params = new HashMap<>();
         params.put("TOPICS", "grain,wheat");
         params.put("DAATE", "APR");
+        params.put("PLACES", "france");
+        params.put("DATE", "Jun");
         String request = "";
         for (String key : params.keySet()) {
             request += key + "=" + params.get(key) + "&";
@@ -82,10 +84,30 @@ public class RequestTest {
 
         ArticleParser articleParser = new ArticleParser(this.restTemplate.getForObject("http://localhost:" +
                 port + "/article?" + request, String.class));
-        assertThat(articleParser.onlyValidFilter(params)).isTrue();
+        assertThat(articleParser.verifyOnlyApplicableFilterTags(params)).isTrue();
 
     }
 
+    @Test
+    /**
+     * Checks the correct number of returned articles for selected topics
+     */
+    public void correctNumberOfReturnedArticles() throws Exception {
+
+        Map<String, String> params = new HashMap<>();
+        params.put("TOPICS", "acq");
+        params.put("TITLE", "bp");
+        String request = "";
+        for (String key : params.keySet()) {
+            request += key + "=" + params.get(key) + "&";
+        }
+
+        ArticleParser articleParser = new ArticleParser(this.restTemplate.getForObject("http://localhost:" +
+                port + "/article?" + request, String.class));
+        assertThat(articleParser.numberOfArticles()).isEqualTo(2);
+
+    } 
+    
     @Test
     /**
      * Only article with specified id will be returned
