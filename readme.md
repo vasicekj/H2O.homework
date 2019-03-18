@@ -20,7 +20,7 @@
     DATELINE,<br>
     AUTHOR,<br>
     BODY;<br>
-   
+   Invalid tags are ignored.
   <h3>/id</h3>
   returns an article with matching newReuters id
   <h5>example:</h5>
