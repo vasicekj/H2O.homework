@@ -3,6 +3,7 @@ package com.example.demo;
 import com.example.demo.Enums.SgmlTags;
 import com.example.demo.Enums.TextTags;
 import org.json.JSONArray;
+import org.json.JSONObject;
 import org.jsoup.nodes.Document;
 
 import java.util.ArrayList;
@@ -17,8 +18,12 @@ import java.util.Map;
  */
 public class ArticleFilter {
     private Map<Integer, Document> articleMap;
-    private Map<String, String> applicableTags;
+    private Map<String, String> validTags;
+    private JSONObject invalidTags;
     private ArticleRepository articleRepository;
+    
+    
+    
 
 
     public ArticleFilter(ArticleRepository articleRepository) {
@@ -28,16 +33,20 @@ public class ArticleFilter {
 
 
     public String filterArticles(Map<String, String> parameters) {
-        applicableTags = applicableTags(parameters);
+        applicableTags(parameters);
         return getFilteredResult().toString();
 
     }
 
     private JSONArray getFilteredResult() {
+        JSONArray payload = new JSONArray();
         ArrayList<Integer> results = new ArrayList<>();
-        JSONArray filteredArticles = new JSONArray();
-        if (applicableTags.isEmpty()) {
-            return filteredArticles;
+        if (validTags.size() == 0  && !invalidTags.keys().hasNext()) {
+            articleRepository.getAllArticles();
+        }
+        
+        else if (validTags.size() == 0  && invalidTags.keys().hasNext()){
+            return payload.put(invalidTags);
         }
         Iterator<Map.Entry<Integer, Document>> articleEntry = articleMap.entrySet().iterator();
         while (articleEntry.hasNext()) {
@@ -47,17 +56,18 @@ public class ArticleFilter {
             }
 
         }
+        payload.put(invalidTags);
         results.forEach((articleNo) -> {
-            filteredArticles.put(articleRepository.getArticleAsJSON(articleNo));
+            payload.put(articleRepository.getArticleAsJSON(articleNo));
         });
-
-        return filteredArticles;
+        
+        return payload;
 
     }
 
     private boolean containsParameters(Document doc) {
-        for (String key : applicableTags.keySet()) {
-            String[] values = applicableTags.get(key).split(",");
+        for (String key : validTags.keySet()) {
+            String[] values = validTags.get(key).split(",");
             for (String s : values) {
                 if (!doc.select(key).text().toLowerCase().contains(s.toLowerCase())) {
                     return false;
@@ -67,16 +77,17 @@ public class ArticleFilter {
         return true;
     }
 
-    private Map<String, String> applicableTags(Map<String, String> params) {
-        Map<String, String> applicableTags = new HashMap<>();
+    private void applicableTags(Map<String, String> params) {
+        invalidTags = new JSONObject();
+        validTags = new HashMap<>();
         for (String key : params.keySet()) {
-            getAllEnums().forEach((tag) -> {
-                if (tag.equalsIgnoreCase(key)) {
-                    applicableTags.put(key, params.get(key));
-                }
-            });
+            if (getAllEnums().contains(key.toLowerCase())){
+                validTags.put(key, params.get(key));
+            }
+            else {
+              invalidTags.put(key,"ERROR, filter tag is invalid");  
+            }
         }
-        return applicableTags;
     }
 
 
@@ -84,11 +95,11 @@ public class ArticleFilter {
         ArrayList<String> allEnumsList = new ArrayList<>();
 
         for (SgmlTags tag : SgmlTags.values()) {
-            allEnumsList.add(tag.toString());
+            allEnumsList.add(tag.toString().toLowerCase());
         }
 
         for (TextTags tag : TextTags.values()) {
-            allEnumsList.add(tag.toString());
+            allEnumsList.add(tag.toString().toLowerCase());
         }
         return allEnumsList;
     }

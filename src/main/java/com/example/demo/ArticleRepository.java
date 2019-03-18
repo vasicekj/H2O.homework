@@ -23,22 +23,46 @@ import java.util.Map;
 */
 public class ArticleRepository {
     private String path;
-    private Map<Integer, Document> articleMapInDoc = new HashMap<Integer, Document>();
+    private String allArticles;
+    private Map<Integer, Document> articleMapInDoc = new HashMap<>();
     private Map<Integer, JSONObject> articleMapInString = new HashMap<Integer, JSONObject>();
+    
 
 
     public ArticleRepository(String path) {
         this.path = path;
         articleGenerator();
+        this.allArticles = generateAllArticleMapAsString();
 
-    }
-
-    private static int getArticleId(String article) {
-        return Integer.parseInt(article.substring(article.indexOf("NEWID=\"") + (7), article.indexOf("\">")));
     }
 
     public Map<Integer, Document> getArticleMapInDoc() {
         return articleMapInDoc;
+    }
+    
+
+    public JSONObject getArticleAsJSON(int id){
+        return articleMapInString.get(id);
+    }
+
+    public String getArticleAsString(int id){
+        String article;
+        try {
+             article = articleMapInString.get(id).toString();
+        } catch (NullPointerException ex) {
+            JSONObject error = new JSONObject();
+            return error.put("error", "article not found").toString();
+        }
+        
+        return article;
+    }
+
+    public String getAllArticles() {
+        return allArticles;
+    }
+
+    private static int getArticleId(String article) {
+        return Integer.parseInt(article.substring(article.indexOf("NEWID=\"") + (7), article.indexOf("\">")));
     }
 
     //Create 2 maps, one with "XMLs" for easier filtering and one ready with JSONs
@@ -67,28 +91,13 @@ public class ArticleRepository {
         }
     }
 
-    public String getAllArticleMapAsString() {
+    private String generateAllArticleMapAsString() {
         JSONArray tempArticle = new JSONArray();
         for (JSONObject value : articleMapInString.values()) {
             tempArticle.put(value);
         }
         return tempArticle.toString();
     }
-    public JSONObject getArticleAsJSON(int id){
-        return articleMapInString.get(id);
-    }
-
-    public String getArticleAsString(int id){
-        String article;
-        try {
-             article = articleMapInString.get(id).toString();
-        } catch (NullPointerException ex) {
-            JSONObject error = new JSONObject();
-            return error.put("error", "article not found").toString();
-        }
-        
-        return article;
-    }     
 
     private JSONObject getReutersHeader(Document doc) {
         JSONObject reutersJSON = new JSONObject();

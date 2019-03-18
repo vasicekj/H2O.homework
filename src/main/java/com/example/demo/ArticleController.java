@@ -15,16 +15,10 @@ public class ArticleController {
 
     @GetMapping(value ="/article", produces= MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public String articleid(@RequestParam(value="id", defaultValue="") int id) {
+    public String articleId(@RequestParam(value="id", defaultValue="") int id) {
         return articleRepository.getArticleAsString(id);
     }
-    
-    @GetMapping(value ="/list", produces= MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody
-    public String articleList() {
-        return articleRepository.getAllArticleMapAsString();
-    }
-    
+
     @GetMapping(value ="/filter", produces= MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public String filteredArticles(@RequestParam Map<String, String> params) {
