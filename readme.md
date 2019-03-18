@@ -2,13 +2,13 @@
 
   <h3>/article</h3>
   Returns all articles or all articles matching the filter, if invalid filtering tag is used, the tag is ignored, multiple tags can be used.<br>
+    <h5>example:</h5>
+  <code>/article</code><br>
+  Returns all articles.
   More values per tag are separated by comma
   <h5>example:</h5>
   <code>/article?TOPICS=grain,wheat,barley&DATE=APR</code><br>
   Returns all articles that have topics grain, wheat and barley and were published in April.<br>
-  <h5>example:</h5>
-  <code>/article</code><br>
-  Returns all articles.
   <h5>example:</h5>
   <code>/article?TOOPICS=grain,wheat,barley&DATE=APR</code><br>
   Returns all articles that have Apr in date as TOOPICS is a not a valid tag.
