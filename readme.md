@@ -7,7 +7,7 @@
   Returns all articles.
   <h5>example with multiple tags and multiple values separated by comma:</h5>
   <code>/article?TOPICS=grain,wheat&places=france</code><br>
-  Returns all articles that have topics grain, wheat and barley and were published in April.<br>
+  Returns all articles that have topics grain and wheat from france.<br>
   <h5>example with one valid and one invalid tag:</h5>
   <code>/article?TOOPICS=grain,wheat,barley&DATE=APR</code><br>
   Returns all articles that have Apr in date as TOOPICS is a not a valid tag.
