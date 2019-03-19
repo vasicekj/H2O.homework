@@ -24,7 +24,7 @@ import java.util.Map;
 public class ArticleRepository {
     private String path;
     private Map<Integer, Document> articleMapInDoc = new HashMap<>();
-    private Map<Integer, JSONObject> articleMapInString = new HashMap<Integer, JSONObject>();
+    private Map<Integer, JSONObject> articleMapInJson = new HashMap<Integer, JSONObject>();
 
     public ArticleRepository(String path) {
         this.path = path;
@@ -36,13 +36,13 @@ public class ArticleRepository {
     }
 
     public JSONObject getArticleAsJSON(int id){
-        return articleMapInString.get(id);
+        return articleMapInJson.get(id);
     }
 
     public String getArticleAsString(int id){
         String article;
         try {
-             article = articleMapInString.get(id).toString();
+             article = articleMapInJson.get(id).toString();
         } catch (NullPointerException ex) {
             JSONObject error = new JSONObject();
             return error.put("error", "article not found").toString();
@@ -67,7 +67,7 @@ public class ArticleRepository {
                 if (line.indexOf("</REUTERS>") >= 0) {
                     Document doc = Jsoup.parse(article, "", Parser.xmlParser());
                     articleMapInDoc.put(getArticleId(article), doc);
-                    articleMapInString.put(getArticleId(article), convertDocToJson(doc));
+                    articleMapInJson.put(getArticleId(article), convertDocToJson(doc));
                     article = "";
                 }
             }
